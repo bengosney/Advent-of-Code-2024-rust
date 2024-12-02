@@ -15,7 +15,7 @@ CURRENT_DAY=$(shell date +%d)
 CURRENT_YEAR=2024
 COOKIEFILE=cookies.txt
 
-DAYS=$(wildcard rust/src/day*.rs)
+DAYS=$(wildcard src/day*.rs)
 COGABLE_FILES=$(shell find . -maxdepth 3 -type f -exec grep -q "\[\[\[cog" {} \; -print)
 
 inputs: $(ALLINPUTS)
@@ -39,10 +39,10 @@ $(COOKIEFILE):
 inputs/day_%.txt: $(COOKIEFILE)
 	curl -H 'User-Agent: Makefile - curl : bengosney@googlemail.com' --cookie "$(shell cat $^)" -s -L -o $@ https://adventofcode.com/$(CURRENT_YEAR)/day/$(shell echo "$@" | egrep -o "[0-9]+" | sed 's/^0*//')/input
 
-rust/src/day%.rs: ## Create a new rust file
+src/day%.rs: ## Create a new rust file
 	touch $@
 
-today: inputs/day_$(CURRENT_DAY).txt rust/src/day$(CURRENT_DAY).rs rust/inputs ## Setup current day
+today: inputs/day_$(CURRENT_DAY).txt src/day$(CURRENT_DAY).rs ## Setup current day
 	$(MAKE) cog
 
 $(COGABLE_FILES): $(DAYS)
@@ -59,7 +59,7 @@ $(COG_PATH): .direnv
 	@python -m pip install uv
 	@touch $@ $^
 
-rust/target/release/aoc2024: rust/src/main.rs $(DAYS)
-	cd rust && cargo build --release
+target/release/aoc2024: src/main.rs $(DAYS)
+	cargo build --release
 
-build: rust/target/release/aoc2024
+build: target/release/aoc2024
