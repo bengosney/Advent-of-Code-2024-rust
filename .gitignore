@@ -2,3 +2,5 @@ cookies.txt
 .envrc
 .direnv
 */inputs
+
+/target
