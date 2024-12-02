@@ -5,7 +5,8 @@ for day in sorted([p.name.replace(".rs", "") for p in list(Path("./rust/src").gl
    cog.outl(f"mod {day};")
 ]]]*/
 mod day01;
-/*[[[end]]] (checksum: 909f8627da7e00e70db3ecbb5ee3ebb0) */
+mod day02;
+/*[[[end]]] (checksum: d569f5bb526ffeafb69825d9a26f2f2d) */
 
 fn main() {
     println!("Hello, world!");
