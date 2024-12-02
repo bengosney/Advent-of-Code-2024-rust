@@ -2,6 +2,7 @@
 .DEFAULT_GOAL := today
 
 .PRECIOUS: inputs/day_%.txt
+.FORCE:
 
 HOOKS=$(.git/hooks/pre-commit)
 
@@ -43,7 +44,7 @@ rust/src/day%.rs: ## Create a new rust file
 today: inputs/day_$(CURRENT_DAY).txt rust/src/day$(CURRENT_DAY).rs rust/inputs ## Setup current day
 	$(MAKE) cog
 
-$(COGABLE_FILES):
+$(COGABLE_FILES): .FORCE
 	uvx --from cogapp cog -cr $@
 
 cog: $(COGABLE_FILES) ## Run cog on all files
