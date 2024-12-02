@@ -1,4 +1,4 @@
-.PHONY: help clean go today day_% inputs cog
+.PHONY: help clean go today day_% inputs cog build
 .DEFAULT_GOAL := today
 
 .PRECIOUS: inputs/day_%.txt
@@ -15,6 +15,7 @@ CURRENT_DAY=$(shell date +%d)
 CURRENT_YEAR=2024
 COOKIEFILE=cookies.txt
 
+DAYS=$(wildcard rust/src/day*.rs)
 COGABLE_FILES=$(shell find . -maxdepth 3 -type f -exec grep -q "\[\[\[cog" {} \; -print)
 
 inputs: $(ALLINPUTS)
@@ -44,8 +45,9 @@ rust/src/day%.rs: ## Create a new rust file
 today: inputs/day_$(CURRENT_DAY).txt rust/src/day$(CURRENT_DAY).rs rust/inputs ## Setup current day
 	$(MAKE) cog
 
-$(COGABLE_FILES): .FORCE
+$(COGABLE_FILES): $(DAYS)
 	uvx --from cogapp cog -cr $@
+	@touch $@
 
 cog: $(COGABLE_FILES) ## Run cog on all files
 	
@@ -57,8 +59,7 @@ $(COG_PATH): .direnv
 	@python -m pip install uv
 	@touch $@ $^
 
-.envrc:
-	@echo "Setting up .envrc then stopping"
-	@echo "layout python python$(SYSTEM_PYTHON_VERSION)" > $@
-	@touch -d '+1 minute' $@
-	@false
+rust/target/release/aoc2024: rust/src/main.rs $(DAYS)
+	cd rust && cargo build --release
+
+build: rust/target/release/aoc2024
