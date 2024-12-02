@@ -22,30 +22,42 @@ fn parse_input(input: &str) -> Vec<Vec<i32>> {
     input
         .lines()
         .map(|line| {
-            line
-                .split_whitespace()
+            line.split_whitespace()
                 .map(|s| s.parse::<i32>().unwrap())
                 .collect()
         })
         .collect()
 }
 
+fn direction(a: i32, b: i32) -> i32 {
+    (a < b) as i32 - (a > b) as i32
+}
+
+#[test]
+fn test_pairwise() {
+    let row = vec![1, 2, 3, 4];
+    let pairs = pairwise(&row);
+    assert_eq!(pairs, vec![(1, 2), (2, 3), (3, 4)]);
+}
+
+fn pairwise(row: &Vec<i32>) -> Vec<(i32, i32)> {
+    row.iter()
+        .zip(row.iter().skip(1))
+        .map(|(&a, &b)| (a, b))
+        .collect()
+}
+
 fn check_row(row: &Vec<i32>) -> bool {
     let mut row_dir = 0;
-    for i in 0..(row.len()-1) {
-        let dir = (row[i] < row[i+1]) as i32 - (row[i] > row[i+1]) as i32;
-        if ![0, dir].contains(&row_dir) {
+    for (a, b) in pairwise(row) {
+        let dir = direction(a, b);
+        if ![0, dir].contains(&row_dir) || ![1,2,3].contains(&(a - b).abs()) {
             return false;
         }
         row_dir = dir;
-
-        match (row[i] - row[i+1]).abs() {
-            1 | 2 | 3 => continue,
-            _ => return false,
-        }
     }
 
-    return true
+    return true;
 }
 
 pub fn part1(input: &str) -> Result<i32, &'static str> {
@@ -54,23 +66,23 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
     Ok(count)
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
-    let rows = parse_input(input);
-    let mut count = 0;
-    for row in rows.iter() {
-        if check_row(row) {
-            count += 1;
-            continue;
-        }
-        for i in 0..row.len() {
-            let mut row = row.clone();
-            row.remove(i);
-            if check_row(&row) {
-                count += 1;
-                break;
-            }
+fn check_row_with_damper(row: &Vec<i32>) -> bool {
+    for i in 0..row.len() {
+        let mut row = row.clone();
+        row.remove(i);
+        if check_row(&row) {
+            return true;
         }
     }
-    
+
+    return false;
+}
+
+pub fn part2(input: &str) -> Result<i32, &'static str> {
+    let rows = parse_input(input);
+    let count = rows
+        .iter()
+        .filter(|row| check_row(row) || check_row_with_damper(row))
+        .count() as i32;
     Ok(count)
 }
