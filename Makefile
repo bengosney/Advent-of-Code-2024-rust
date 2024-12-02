@@ -43,12 +43,11 @@ rust/src/day%.rs: ## Create a new rust file
 today: inputs/day_$(CURRENT_DAY).txt rust/src/day$(CURRENT_DAY).rs rust/inputs ## Setup current day
 	$(MAKE) cog
 
-rust/inputs: inputs
-	ln -s $(shell pwd)/$< $(shell pwd)/$@
+$(COGABLE_FILES):
+	uvx --from cogapp cog -cr $@
 
-cog: $(COG_PATH) $(COGABLE_FILES) ## Run cog on all files
-	uvx --from cogapp cog -cr $(filter-out $<,$^)
-
+cog: $(COGABLE_FILES) ## Run cog on all files
+	
 $(COG_PATH): .direnv
 	@python -m uv pip install cogapp
 	@touch $@
