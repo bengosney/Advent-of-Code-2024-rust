@@ -51,19 +51,13 @@ fn check_row(row: &Vec<i32>) -> bool {
     let mut row_dir = 0;
     for (a, b) in pairwise(row) {
         let dir = direction(a, b);
-        if ![0, dir].contains(&row_dir) || ![1,2,3].contains(&(a - b).abs()) {
+        if ![0, dir].contains(&row_dir) || ![1, 2, 3].contains(&(a - b).abs()) {
             return false;
         }
         row_dir = dir;
     }
 
     return true;
-}
-
-pub fn part1(input: &str) -> Result<i32, &'static str> {
-    let rows = parse_input(input);
-    let count = rows.iter().filter(|row| check_row(row)).count() as i32;
-    Ok(count)
 }
 
 fn check_row_with_damper(row: &Vec<i32>) -> bool {
@@ -76,6 +70,12 @@ fn check_row_with_damper(row: &Vec<i32>) -> bool {
     }
 
     return false;
+}
+
+pub fn part1(input: &str) -> Result<i32, &'static str> {
+    let rows = parse_input(input);
+    let count = rows.iter().filter(|row| check_row(row)).count() as i32;
+    Ok(count)
 }
 
 pub fn part2(input: &str) -> Result<i32, &'static str> {
