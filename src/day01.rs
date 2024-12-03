@@ -42,10 +42,12 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
     Ok(zip(left, right).map(|(l, r)| (r - l).abs()).sum())
 }
 
+fn count_items<T: PartialEq>(needle: &T, haystack: &Vec<T>) -> i32 {
+    haystack.iter().filter(|&x| *x == *needle).count() as i32
+}
+
 pub fn part2(input: &str) -> Result<i32, &'static str> {
     let (left, right) = parse_input(input);
 
-    let count_items = |what: i32| right.iter().filter(|&r| *r == what).count();
-
-    Ok(left.iter().map(|l| l * count_items(*l) as i32).sum())
+    Ok(left.iter().map(|l| l * count_items(l, &right) as i32).sum())
 }
