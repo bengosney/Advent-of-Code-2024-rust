@@ -1,12 +1,13 @@
 /* [[[cog
 import cog
 from pathlib import Path
-for day in sorted([p.name.replace(".rs", "") for p in list(Path("./rust/src").glob("day*.rs"))]):
+for day in sorted([p.name.replace(".rs", "") for p in list(Path("./src").glob("day*.rs"))]):
    cog.outl(f"mod {day};")
 ]]]*/
 mod day01;
 mod day02;
-/*[[[end]]] (checksum: d569f5bb526ffeafb69825d9a26f2f2d) */
+mod day03;
+/*[[[end]]] (checksum: 154144a0a27fe53e9874020d315b0ae5) */
 
 fn read_input(day: &str) -> String {
     let path = format!("./inputs/{}_{}.txt", &day[..3], &day[3..]);
@@ -24,12 +25,13 @@ fn main() {
         /* [[[cog
         import cog
         from pathlib import Path
-        for day in sorted([p.name.replace(".rs", "") for p in list(Path("./rust/src").glob("day*.rs"))]):
+        for day in sorted([p.name.replace(".rs", "") for p in list(Path("./src").glob("day*.rs"))]):
             cog.outl(f'"{day}" => ({day}::part1(&input), {day}::part2(&input)),')
         ]]]*/
         "day01" => (day01::part1(&input), day01::part2(&input)),
         "day02" => (day02::part1(&input), day02::part2(&input)),
-        /*[[[end]]] (checksum: c0eed7951dc0dfa04d55d17494e5e15b)*/
+        "day03" => (day03::part1(&input), day03::part2(&input)),
+        /*[[[end]]] (checksum: 9a590689bdbf5e9c630b015e27e931e7)*/
         _ => panic!("Unknown day"),
     };
 
