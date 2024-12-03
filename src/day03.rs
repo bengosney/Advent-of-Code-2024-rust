@@ -39,28 +39,22 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
     let regex = Regex::new(r"mul\((\d+),(\d+)\)|(do\(\))|(don't\(\))").unwrap();
 
     let mut working: bool = true;
-    let total: i32 = regex
+    let mut total: i32 = 0;
+    regex
         .find_iter(input)
-        .map(|cap| match cap.as_str() {
-            "do()" => {
-                working = true;
-                0
-            }
-            "don't()" => {
-                working = false;
-                0
-            }
-            operation => {
+        .for_each(|cap| match cap.as_str() {
+            "do()" => working = true,
+            "don't()" => working = false,
+            operation => if working {
                 let result = Regex::new(r"mul\((\d+),(\d+)\)")
                     .unwrap()
                     .captures(operation)
                     .unwrap();
                 let a = result[1].parse::<i32>().unwrap();
                 let b = result[2].parse::<i32>().unwrap();
-                (a * b) * working as i32
+                total += a * b;
             }
-        })
-        .sum();
+        });
 
     Ok(total)
 }
