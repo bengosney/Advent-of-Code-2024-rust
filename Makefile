@@ -9,8 +9,8 @@ HOOKS=$(.git/hooks/pre-commit)
 BINPATH=$(shell which python | xargs dirname | xargs realpath --relative-to=".")
 COG_PATH:=$(BINPATH)/cog
 
-ALLDAYS=$(wildcard src/day_*.py)
-ALLINPUTS=$(subst src/,inputs/,$(subst .py,.txt,$(ALLDAYS)))
+ALLDAYS=$(wildcard src/day*.rs)
+ALLINPUTS=$(subst src/day,inputs/day_,$(subst .rs,.txt,$(ALLDAYS)))
 CURRENT_DAY=$(shell date +%d)
 CURRENT_YEAR=2024
 COOKIEFILE=cookies.txt
@@ -19,7 +19,6 @@ DAYS=$(wildcard src/day*.rs)
 COGABLE_FILES=$(shell find . -maxdepth 3 -type f -exec grep -q "\[\[\[cog" {} \; -print)
 
 inputs: $(ALLINPUTS)
-	@echo $^
 
 help: ## Display this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
