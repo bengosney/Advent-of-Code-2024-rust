@@ -36,25 +36,26 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
 }
 
 pub fn part2(input: &str) -> Result<i32, &'static str> {
-    let regex = Regex::new(r"mul\((\d+),(\d+)\)|(do\(\))|(don't\(\))").unwrap();
+    let main_regex = Regex::new(r"mul\(\d+,\d+\)|(do\(\))|(don't\(\))").unwrap();
+    let mul_regex = Regex::new(r"mul\((\d+),(\d+)\)").unwrap();
 
     let mut working: bool = true;
     let mut total: i32 = 0;
-    regex
-        .find_iter(input)
-        .for_each(|cap| match cap.as_str() {
+
+    for cap in main_regex.find_iter(input) {
+        match cap.as_str() {
             "do()" => working = true,
             "don't()" => working = false,
-            operation => if working {
-                let result = Regex::new(r"mul\((\d+),(\d+)\)")
-                    .unwrap()
-                    .captures(operation)
-                    .unwrap();
-                let a = result[1].parse::<i32>().unwrap();
-                let b = result[2].parse::<i32>().unwrap();
-                total += a * b;
+            operation if working => {
+                if let Some(result) = mul_regex.captures(operation) {
+                    let a = result[1].parse::<i32>().unwrap();
+                    let b = result[2].parse::<i32>().unwrap();
+                    total += a * b;
+                }
             }
-        });
+            _ => {}
+        }
+    }
 
     Ok(total)
 }
