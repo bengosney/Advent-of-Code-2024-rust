@@ -25,15 +25,15 @@ fn test_part2_example() {
 }
 
 fn puzzle_to_grid(puzzle: &str) -> HashMap<(isize, isize), char> {
-    let mut grid = HashMap::new();
-
-    for (y, line) in puzzle.lines().enumerate() {
-        for (x, cell) in line.chars().enumerate() {
-            grid.insert((x as isize, y as isize), cell);
-        }
-    }
-
-    grid
+    puzzle
+        .lines()
+        .enumerate()
+        .flat_map(|(y, line)| {
+            line.chars()
+                .enumerate()
+                .map(move |(x, cell)| ((x as isize, y as isize), cell))
+        })
+        .collect()
 }
 
 pub fn part1(input: &str) -> Result<i32, &'static str> {
