@@ -63,12 +63,6 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
 }
 
 pub fn part2(input: &str) -> Result<i32, &'static str> {
-    let grid = puzzle_to_grid(input);
-
-    let grid_get = |x, y| *grid.get(&(x, y)).unwrap_or(&' ');
-
-    let mut found = 0;
-
     const PATTERNS: [[char; 5]; 5] = [
         ['M', 'S', 'A', 'M', 'S'],
         ['S', 'M', 'A', 'S', 'M'],
@@ -77,19 +71,26 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
         ['M', 'M', 'A', 'S', 'S'],
     ];
 
-    for &(x, y) in grid.keys() {
-        let selected = [
+    let grid = puzzle_to_grid(input);
+
+    let select = |x, y| {
+        let grid_get = |x, y| *grid.get(&(x, y)).unwrap_or(&' ');
+        [
             grid_get(x, y),
             grid_get(x + 2, y),
             grid_get(x + 1, y + 1),
             grid_get(x, y + 2),
             grid_get(x + 2, y + 2),
-        ];
+        ]
+    };
 
-        if PATTERNS.iter().any(|&pattern| pattern == selected) {
-            found += 1;
+    let found: i32 = grid.keys().map(|&(x, y)| {
+        let selected = select(x, y);
+        match PATTERNS.iter().any(|&pattern| pattern == selected) {
+            true => 1,
+            false => 0,
         }
-    }
+    }).sum();
 
     Ok(found)
 }
