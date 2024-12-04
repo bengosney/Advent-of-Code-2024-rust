@@ -26,9 +26,8 @@ fn test_part2_example() {
 
 fn puzzle_to_grid(puzzle: &str) -> HashMap<(isize, isize), char> {
     let mut grid = HashMap::new();
-    let lines: Vec<&str> = puzzle.lines().collect();
 
-    for (y, line) in lines.iter().enumerate() {
+    for (y, line) in puzzle.lines().enumerate() {
         for (x, cell) in line.chars().enumerate() {
             grid.insert((x as isize, y as isize), cell);
         }
@@ -70,7 +69,7 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
 
     let mut found = 0;
 
-    let patterns = [
+    const PATTERNS: [[char; 5]; 5] = [
         ['M', 'S', 'A', 'M', 'S'],
         ['S', 'M', 'A', 'S', 'M'],
         ['M', 'S', 'A', 'M', 's'],
@@ -87,7 +86,7 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
             grid_get(x + 2, y + 2),
         ];
 
-        if patterns.iter().any(|&pattern| pattern == selected) {
+        if PATTERNS.iter().any(|&pattern| pattern == selected) {
             found += 1;
         }
     }
