@@ -7,7 +7,8 @@ for day in sorted([p.name.replace(".rs", "") for p in list(Path("./src").glob("d
 mod day01;
 mod day02;
 mod day03;
-/*[[[end]]] (checksum: 154144a0a27fe53e9874020d315b0ae5) */
+mod day04;
+/*[[[end]]] (checksum: 8eae1e75c72d9fb4d51cdc73a7a72ce8) */
 
 fn read_input(day: &str) -> String {
     let path = format!("./inputs/{}_{}.txt", &day[..3], &day[3..]);
@@ -31,7 +32,8 @@ fn main() {
         "day01" => (day01::part1(&input), day01::part2(&input)),
         "day02" => (day02::part1(&input), day02::part2(&input)),
         "day03" => (day03::part1(&input), day03::part2(&input)),
-        /*[[[end]]] (checksum: 9a590689bdbf5e9c630b015e27e931e7)*/
+        "day04" => (day04::part1(&input), day04::part2(&input)),
+        /*[[[end]]] (checksum: b2cafbe3035dc1c8fa845dbb17cf70fb)*/
         _ => panic!("Unknown day"),
     };
 
