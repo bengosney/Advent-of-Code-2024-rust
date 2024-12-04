@@ -39,27 +39,27 @@ fn puzzle_to_grid(puzzle: &str) -> HashMap<(isize, isize), char> {
 pub fn part1(input: &str) -> Result<i32, &'static str> {
     let grid = puzzle_to_grid(input);
 
-    let forwords = ['X', 'M', 'A', 'S'];
-    let backwords = ['S', 'A', 'M', 'X'];
+    const FORWORDS: [char; 4] = ['X', 'M', 'A', 'S'];
+    const BACKWORDS: [char; 4] = ['S', 'A', 'M', 'X'];
 
     let grid_get = |x, y| *grid.get(&(x, y)).unwrap_or(&' ');
 
-    let directions = [(1, 0), (0, 1), (1, 1), (1, -1)];
+    const DIRECTIONS: [(isize, isize); 4] = [(1, 0), (0, 1), (1, 1), (1, -1)];
 
-    let mut total = 0;
-    for &(x, y) in grid.keys() {
-        for &(dx, dy) in &directions {
-            let to_check: Vec<char> = (0..4)
-                .map(|i| grid_get(x.wrapping_add(i * dx), y.wrapping_add(i * dy)))
-                .collect();
+    Ok(grid
+        .keys()
+        .flat_map(|&(x, y)| {
+            DIRECTIONS.iter().map(move |&(dx, dy)| {
+                let to_check: Vec<char> =
+                    (0..4).map(|i| grid_get(x + i * dx, y + i * dy)).collect();
 
-            if to_check == forwords || to_check == backwords {
-                total += 1;
-            }
-        }
-    }
-
-    Ok(total)
+                match to_check == FORWORDS || to_check == BACKWORDS {
+                    true => 1,
+                    false => 0,
+                }
+            })
+        })
+        .sum())
 }
 
 pub fn part2(input: &str) -> Result<i32, &'static str> {
@@ -84,13 +84,14 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
         ]
     };
 
-    let found: i32 = grid.keys().map(|&(x, y)| {
-        let selected = select(x, y);
-        match PATTERNS.iter().any(|&pattern| pattern == selected) {
-            true => 1,
-            false => 0,
-        }
-    }).sum();
-
-    Ok(found)
+    Ok(grid
+        .keys()
+        .map(|&(x, y)| {
+            let selected = select(x, y);
+            match PATTERNS.iter().any(|&pattern| pattern == selected) {
+                true => 1,
+                false => 0,
+            }
+        })
+        .sum())
 }
