@@ -39,7 +39,7 @@ inputs/day_%.txt: $(COOKIEFILE)
 	curl -H 'User-Agent: Makefile - curl : bengosney@googlemail.com' --cookie "$(shell cat $^)" -s -L -o $@ https://adventofcode.com/$(CURRENT_YEAR)/day/$(shell echo "$@" | egrep -o "[0-9]+" | sed 's/^0*//')/input
 
 src/day%.rs: ## Create a new rust file
-	touch $@
+	cp template.rs $@
 
 today: inputs/day_$(CURRENT_DAY).txt src/day$(CURRENT_DAY).rs ## Setup current day
 	$(MAKE) cog
