@@ -65,15 +65,11 @@ fn process_input(input: &str) -> (Vec<Rule>, Vec<Book>) {
 }
 
 fn in_order(rules: &Vec<Rule>, book: &Book) -> bool {
-    for (pos, page) in book.iter().enumerate() {
-        for pair in rules.iter() {
-            if page == &pair.1 && book[pos + 1..].contains(&pair.0) {
-                return false;
-            }
-        }
-    }
-
-    return true;
+    book.iter().enumerate().all(|(pos, &page)| {
+        rules
+            .iter()
+            .all(|pair| !(page == pair.1 && book[pos + 1..].contains(&pair.0)))
+    })
 }
 
 fn filter_rules(rules: &Vec<Rule>, book: &Book) -> Vec<Rule> {
