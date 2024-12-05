@@ -76,6 +76,14 @@ fn in_order(rules: &Vec<Rule>, book: &Book) -> bool {
     return true;
 }
 
+fn filter_rules(rules: &Vec<Rule>, book: &Book) -> Vec<Rule> {
+    rules
+        .iter()
+        .filter(|(a, b)| book.contains(a) && book.contains(b))
+        .cloned()
+        .collect()
+}
+
 fn fix_order(rules: &Vec<Rule>, book: &Book) -> Book {
     let mut ordered_book = book.clone();
 
@@ -103,6 +111,7 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
     let mut total: i32 = 0;
 
     for book in books.iter() {
+        let rules = filter_rules(&rules, book);
         if in_order(&rules, book) {
             total += book[book.len() / 2] as i32;
         }
@@ -117,6 +126,7 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
     let mut total: i32 = 0;
 
     for book in books.iter() {
+        let rules = filter_rules(&rules, book);
         if !in_order(&rules, book) {
             let ordered_book = fix_order(&rules, book);
             total += ordered_book[book.len() / 2] as i32;
