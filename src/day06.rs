@@ -86,24 +86,23 @@ fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSe
 pub fn part1(input: &str) -> Result<i32, &'static str> {
     let (map, start_position) = process_input(input);
 
-    let visited = walk_path(&map, start_position).unwrap();
-
-    Ok(visited.len() as i32)
+    Ok(walk_path(&map, start_position).unwrap().len() as i32)
 }
 
 pub fn part2(input: &str) -> Result<i32, &'static str> {
-    let (map, start_position) = process_input(input);
+    let (mut map, start_position) = process_input(input);
 
     let visited = walk_path(&map, start_position).unwrap();
     let mut loops = 0;
 
-    for obstruction_position in visited.iter() {
-        let mut map = map.clone();
-        map.insert(*obstruction_position, '#');
-        loops += match walk_path(&map, start_position) {
-            Ok(_) => 0,
-            Err(_) => 1,
+    for &obstruction_position in visited.iter() {
+        let original_value = map.insert(obstruction_position, '#');
+        if walk_path(&map, start_position).is_err() {
+            loops += 1;
         };
+        if let Some(value) = original_value {
+            map.insert(obstruction_position, value);
+        }
     }
 
     Ok(loops)
