@@ -1,4 +1,4 @@
-.PHONY: help clean go today day_% inputs cog build
+.PHONY: help clean go today day_% inputs cog build watch
 .DEFAULT_GOAL := today
 
 .PRECIOUS: inputs/day_%.txt
@@ -43,6 +43,7 @@ src/day%.rs: ## Create a new rust file
 
 today: inputs/day_$(CURRENT_DAY).txt src/day$(CURRENT_DAY).rs ## Setup current day
 	$(MAKE) cog
+	$(MAKE) watch
 
 $(COGABLE_FILES): $(DAYS)
 	uvx --from cogapp cog -cr $@
@@ -62,3 +63,6 @@ target/release/aoc2024: src/main.rs $(DAYS)
 	cargo build --release
 
 build: target/release/aoc2024
+
+watch: ## Run tests on file change
+	while inotifywait -e close_write src/day*.rs; do cargo test; done
