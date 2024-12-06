@@ -86,13 +86,19 @@ fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSe
 pub fn part1(input: &str) -> Result<i32, &'static str> {
     let (map, start_position) = process_input(input);
 
-    Ok(walk_path(&map, start_position).unwrap().len() as i32)
+    match walk_path(&map, start_position) {
+        Ok(visited) => Ok(visited.len() as i32),
+        Err(e) => Err(e),
+    }
 }
 
 pub fn part2(input: &str) -> Result<i32, &'static str> {
     let (mut map, start_position) = process_input(input);
 
-    let visited = walk_path(&map, start_position).unwrap();
+    let visited = match walk_path(&map, start_position) {
+        Ok(visited) => visited,
+        Err(e) => return Err(e),
+    };
     let mut loops = 0;
 
     for &obstruction_position in visited.iter() {
