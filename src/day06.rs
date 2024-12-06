@@ -60,6 +60,10 @@ const fn turn_left(direction: Point) -> Result<Point, &'static str> {
     }
 }
 
+const fn add(a: Point, b: Point) -> Point {
+    (a.0 + b.0, a.1 + b.1)
+}
+
 fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSet<Point>, &'static str> {
     let mut position = start_position.clone();
     let mut direction = (0, -1);
@@ -71,9 +75,9 @@ fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSe
         }
         visited_directions.entry(position).or_default().insert(direction); 
 
-        match map.get(&(position.0 + direction.0, position.1 + direction.1)) {
+        match map.get(&add(position, direction)) {
             Some('#') => direction = turn_left(direction).unwrap(),
-            Some(_) => position = (position.0 + direction.0, position.1 + direction.1),
+            Some(_) => position = add(position, direction),
             None => break Ok(visited_directions.keys().cloned().collect()),
         }
     }
