@@ -63,20 +63,18 @@ const fn turn_left(direction: Point) -> Result<Point, &'static str> {
 fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSet<Point>, &'static str> {
     let mut position = start_position.clone();
     let mut direction = (0, -1);
-    let mut visited = HashSet::new();
-    let mut seen_directions: HashMap<Point, HashSet<Point>> = HashMap::new();
+    let mut visited_directions: HashMap<Point, HashSet<Point>> = HashMap::new();
 
     loop {
-        visited.insert(position.clone());
-        if seen_directions.entry(position).or_default().contains(&direction) {
+        if visited_directions.entry(position).or_default().contains(&direction) {
             break Err("Loop detected");
         }
-        seen_directions.entry(position).or_default().insert(direction); 
+        visited_directions.entry(position).or_default().insert(direction); 
 
         match map.get(&(position.0 + direction.0, position.1 + direction.1)) {
             Some('#') => direction = turn_left(direction).unwrap(),
             Some(_) => position = (position.0 + direction.0, position.1 + direction.1),
-            None => break Ok(visited),
+            None => break Ok(visited_directions.keys().cloned().collect()),
         }
     }
 }
