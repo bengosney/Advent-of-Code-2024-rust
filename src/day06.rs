@@ -67,18 +67,17 @@ const fn add(a: Point, b: Point) -> Point {
 fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSet<Point>, &'static str> {
     let mut position = start_position.clone();
     let mut direction = (0, -1);
-    let mut visited_directions: HashMap<Point, HashSet<Point>> = HashMap::new();
+    let mut visited_positions: HashSet<(Point, Point)> = HashSet::new();
 
     loop {
-        if visited_directions.entry(position).or_default().contains(&direction) {
+        if !visited_positions.insert((position, direction)) {
             break Err("Loop detected");
         }
-        visited_directions.entry(position).or_default().insert(direction); 
 
         match map.get(&add(position, direction)) {
             Some('#') => direction = turn_left(direction).unwrap(),
             Some(_) => position = add(position, direction),
-            None => break Ok(visited_directions.keys().cloned().collect()),
+            None => break Ok(visited_positions.iter().map(|(p, _)| *p).collect()),
         }
     }
 }
