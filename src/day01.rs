@@ -1,5 +1,5 @@
-use std::iter::zip;
 use crate::utils::PuzzleResult;
+use std::iter::zip;
 
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"3   4
@@ -50,5 +50,8 @@ fn count_items<T: PartialEq>(needle: &T, haystack: &Vec<T>) -> i32 {
 pub fn part2(input: &str) -> PuzzleResult {
     let (left, right) = parse_input(input);
 
-    Ok(left.iter().map(|l| l * count_items(l, &right) as i32).sum::<i32>() as usize)
+    Ok(left
+        .iter()
+        .map(|l| l * count_items(l, &right) as i32)
+        .sum::<i32>() as usize)
 }

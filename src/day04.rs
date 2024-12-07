@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use crate::utils::PuzzleResult;
+use std::collections::HashMap;
 
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"MMMSXXMASM

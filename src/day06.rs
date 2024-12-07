@@ -1,5 +1,5 @@
-use std::collections::{HashMap, HashSet};
 use crate::utils::PuzzleResult;
+use std::collections::{HashMap, HashSet};
 
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"....#.....
@@ -65,7 +65,10 @@ const fn add(a: Point, b: Point) -> Point {
     (a.0 + b.0, a.1 + b.1)
 }
 
-fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSet<Point>, &'static str> {
+fn walk_path(
+    map: &HashMap<Point, char>,
+    start_position: Point,
+) -> Result<HashSet<Point>, &'static str> {
     let mut position = start_position.clone();
     let mut direction = (0, -1);
     let mut visited_positions: HashSet<(Point, Point)> = HashSet::new();
