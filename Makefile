@@ -50,7 +50,7 @@ $(COGABLE_FILES): $(DAYS)
 	@touch $@
 
 cog: $(COGABLE_FILES) ## Run cog on all files
-	
+
 $(COG_PATH): .direnv
 	@python -m uv pip install cogapp
 	@touch $@

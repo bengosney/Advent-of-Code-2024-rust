@@ -1,5 +1,5 @@
-use regex::Regex;
 use crate::utils::PuzzleResult;
+use regex::Regex;
 
 #[cfg(test)]
 const EXAMPLE_INPUT_1: &str =
