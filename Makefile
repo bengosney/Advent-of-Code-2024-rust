@@ -62,7 +62,15 @@ $(COG_PATH): .direnv
 target/release/aoc2024: src/main.rs $(DAYS)
 	cargo build --release
 
+target/debug/aoc2024: src/main.rs $(DAYS)
+	cargo build
+
 build: target/release/aoc2024
 
 watch: ## Run tests on file change
 	while inotifywait -e close_write src/day*.rs; do cargo test; done
+
+profile%: target/release/aoc2024
+	samply record target/debug/aoc2024 day$*
+
+profile: profile$(CURRENT_DAY)

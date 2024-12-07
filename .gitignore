@@ -4,3 +4,7 @@ cookies.txt
 */inputs
 
 /target
+
+flamegraph.svg
+perf.data
+profile.json
