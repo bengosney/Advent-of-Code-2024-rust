@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use crate::utils::PuzzleResult;
 
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"MMMSXXMASM
@@ -36,7 +37,7 @@ fn puzzle_to_grid(puzzle: &str) -> HashMap<(isize, isize), char> {
         .collect()
 }
 
-pub fn part1(input: &str) -> Result<i32, &'static str> {
+pub fn part1(input: &str) -> PuzzleResult {
     let grid = puzzle_to_grid(input);
 
     const FORWORDS: [char; 4] = ['X', 'M', 'A', 'S'];
@@ -62,7 +63,7 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
         .sum())
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
+pub fn part2(input: &str) -> PuzzleResult {
     const PATTERNS: [[char; 5]; 5] = [
         ['M', 'S', 'A', 'M', 'S'],
         ['S', 'M', 'A', 'S', 'M'],

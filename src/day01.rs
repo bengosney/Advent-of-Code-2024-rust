@@ -1,4 +1,5 @@
 use std::iter::zip;
+use crate::utils::PuzzleResult;
 
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"3   4
@@ -33,21 +34,21 @@ fn parse_input(input: &str) -> (Vec<i32>, Vec<i32>) {
         .unzip()
 }
 
-pub fn part1(input: &str) -> Result<i32, &'static str> {
+pub fn part1(input: &str) -> PuzzleResult {
     let (mut left, mut right) = parse_input(input);
 
     left.sort();
     right.sort();
 
-    Ok(zip(left, right).map(|(l, r)| (r - l).abs()).sum())
+    Ok(zip(left, right).map(|(l, r)| (r - l).abs()).sum::<i32>() as usize)
 }
 
 fn count_items<T: PartialEq>(needle: &T, haystack: &Vec<T>) -> i32 {
     haystack.iter().filter(|&x| *x == *needle).count() as i32
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
+pub fn part2(input: &str) -> PuzzleResult {
     let (left, right) = parse_input(input);
 
-    Ok(left.iter().map(|l| l * count_items(l, &right) as i32).sum())
+    Ok(left.iter().map(|l| l * count_items(l, &right) as i32).sum::<i32>() as usize)
 }

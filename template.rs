@@ -1,3 +1,5 @@
+use crate::utils::PuzzleResult;
+
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#""#;
 
@@ -13,10 +15,10 @@ fn test_part2_example() {
     assert_eq!(part2, Result::Ok(0));
 }
 
-pub fn part1(_input: &str) -> Result<i32, &'static str> {
-    Ok(0)
+pub fn part1(_input: &str) -> PuzzleResult {
+    Err("Not implemented".into())
 }
 
-pub fn part2(_input: &str) -> Result<i32, &'static str> {
-    Ok(0)
+pub fn part2(_input: &str) -> PuzzleResult {
+    Err("Not implemented".into())
 }

@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+use crate::utils::PuzzleResult;
 
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"....#.....
@@ -82,16 +83,16 @@ fn walk_path(map: &HashMap<Point, char>, start_position: Point) -> Result<HashSe
     }
 }
 
-pub fn part1(input: &str) -> Result<i32, &'static str> {
+pub fn part1(input: &str) -> PuzzleResult {
     let (map, start_position) = process_input(input);
 
     match walk_path(&map, start_position) {
-        Ok(visited) => Ok(visited.len() as i32),
+        Ok(visited) => Ok(visited.len() as usize),
         Err(e) => Err(e),
     }
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
+pub fn part2(input: &str) -> PuzzleResult {
     let (mut map, start_position) = process_input(input);
 
     let visited = match walk_path(&map, start_position) {
