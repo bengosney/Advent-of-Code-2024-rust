@@ -1,3 +1,5 @@
+use crate::utils::PuzzleResult;
+
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"7 6 4 2 1
 1 2 7 8 9
@@ -72,17 +74,17 @@ fn check_row_with_damper(row: &Vec<i32>) -> bool {
     return false;
 }
 
-pub fn part1(input: &str) -> Result<i32, &'static str> {
+pub fn part1(input: &str) -> PuzzleResult {
     let rows = parse_input(input);
-    let count = rows.iter().filter(|row| check_row(row)).count() as i32;
-    Ok(count)
+    let count = rows.iter().filter(|row| check_row(row)).count();
+    Ok(count as usize)
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
+pub fn part2(input: &str) -> PuzzleResult {
     let rows = parse_input(input);
     let count = rows
         .iter()
         .filter(|row| check_row(row) || check_row_with_damper(row))
-        .count() as i32;
-    Ok(count)
+        .count();
+    Ok(count as usize)
 }

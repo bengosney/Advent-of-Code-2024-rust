@@ -1,4 +1,5 @@
 use regex::Regex;
+use crate::utils::PuzzleResult;
 
 #[cfg(test)]
 const EXAMPLE_INPUT_1: &str =
@@ -20,7 +21,7 @@ fn test_part2_example() {
     assert_eq!(part2, Result::Ok(48));
 }
 
-pub fn part1(input: &str) -> Result<i32, &'static str> {
+pub fn part1(input: &str) -> PuzzleResult {
     let regex = Regex::new(r"(?m)mul\((\d+),(\d+)\)").unwrap();
 
     let total: i32 = regex
@@ -32,10 +33,10 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
         })
         .sum();
 
-    Ok(total)
+    Ok(total as usize)
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
+pub fn part2(input: &str) -> PuzzleResult {
     let main_regex = Regex::new(r"mul\(\d+,\d+\)|(do\(\))|(don't\(\))").unwrap();
     let mul_regex = Regex::new(r"mul\((\d+),(\d+)\)").unwrap();
 
@@ -57,5 +58,5 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
         }
     }
 
-    Ok(total)
+    Ok(total as usize)
 }

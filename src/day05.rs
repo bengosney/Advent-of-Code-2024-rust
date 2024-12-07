@@ -1,3 +1,5 @@
+use crate::utils::PuzzleResult;
+
 #[cfg(test)]
 const EXAMPLE_INPUT: &str = r#"47|53
 97|13
@@ -101,7 +103,7 @@ fn fix_order(rules: &Vec<Rule>, book: &Book) -> Book {
     return ordered_book;
 }
 
-pub fn part1(input: &str) -> Result<i32, &'static str> {
+pub fn part1(input: &str) -> PuzzleResult {
     let (rules, books) = process_input(input);
 
     let mut total: i32 = 0;
@@ -113,10 +115,10 @@ pub fn part1(input: &str) -> Result<i32, &'static str> {
         }
     }
 
-    Ok(total)
+    Ok(total as usize)
 }
 
-pub fn part2(input: &str) -> Result<i32, &'static str> {
+pub fn part2(input: &str) -> PuzzleResult {
     let (rules, books) = process_input(input);
 
     let mut total: i32 = 0;
@@ -129,5 +131,5 @@ pub fn part2(input: &str) -> Result<i32, &'static str> {
         }
     }
 
-    Ok(total)
+    Ok(total as usize)
 }
