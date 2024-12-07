@@ -12,7 +12,8 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
-/*[[[end]]] (checksum: 7fc992fb36e21d032ef8728feee5e2a5) */
+mod day07;
+/*[[[end]]] (checksum: 08b6cf7d6ad787cde550fde8cde0677a) */
 
 fn read_input(day: &str) -> String {
     let path = format!("./inputs/{}_{}.txt", &day[..3], &day[3..]);
@@ -39,7 +40,8 @@ fn main() {
         "day04" => (day04::part1(&input), day04::part2(&input)),
         "day05" => (day05::part1(&input), day05::part2(&input)),
         "day06" => (day06::part1(&input), day06::part2(&input)),
-        /*[[[end]]] (checksum: 54e397f980d8df4c662f68e0de7dc58a)*/
+        "day07" => (day07::part1(&input), day07::part2(&input)),
+        /*[[[end]]] (checksum: fe0ca856b3a8d2f4c0ac8705a856a771)*/
         _ => panic!("Unknown day"),
     };
 
