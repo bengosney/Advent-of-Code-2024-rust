@@ -53,10 +53,15 @@ fn calculate(values: &Vec<u32>, operations: &Vec<Operation>) -> Vec<usize> {
         return vec![values[0] as usize];
     }
 
+    let capacity = operations.len().pow(values.len() as u32 - 1);
+    let mut result = Vec::with_capacity(capacity);
+
     calculate(&values[1..].to_vec(), operations)
         .iter()
         .flat_map(|right| operations.iter().map(|op| op(*right, values[0] as usize)))
-        .collect()
+        .for_each(|val| result.push(val));
+
+    result
 }
 
 pub fn part1(input: &str) -> PuzzleResult {
