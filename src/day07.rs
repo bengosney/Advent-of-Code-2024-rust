@@ -39,6 +39,7 @@ fn parse_input(input: &str) -> Vec<Calculation> {
                 .unwrap()
                 .split_whitespace()
                 .map(|s| s.parse().unwrap())
+                .rev()
                 .collect();
             Calculation { answer, values }
         })
@@ -52,11 +53,9 @@ fn calculate(values: &Vec<u32>, operations: &Vec<Operation>) -> Vec<usize> {
         return vec![values[0] as usize];
     }
 
-    let left = values[0];
-
     calculate(&values[1..].to_vec(), operations)
         .iter()
-        .flat_map(|right| operations.iter().map(|op| op(*right, left as usize)))
+        .flat_map(|right| operations.iter().map(|op| op(*right, values[0] as usize)))
         .collect()
 }
 
@@ -67,8 +66,7 @@ pub fn part1(input: &str) -> PuzzleResult {
     let operations = vec![|a: usize, b: usize| a + b, |a: usize, b: usize| a * b];
 
     for calculation in calculations {
-        let mut values = calculation.values;
-        values.reverse();
+        let values = calculation.values;
         let calculated = calculate(&values, &operations);
         if calculated.iter().any(|&x| x == calculation.answer) {
             total += calculation.answer;
@@ -89,8 +87,7 @@ pub fn part2(input: &str) -> PuzzleResult {
     ];
 
     for calculation in calculations {
-        let mut values = calculation.values;
-        values.reverse();
+        let values = calculation.values;
         let calculated = calculate(&values, &operations);
         if calculated.iter().any(|&x| x == calculation.answer) {
             total += calculation.answer;
