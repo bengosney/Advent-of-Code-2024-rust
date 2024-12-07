@@ -24,8 +24,8 @@ fn test_part2_example() {
 }
 
 struct Calculation {
-    answer: isize,
-    values: Vec<isize>,
+    answer: usize,
+    values: Vec<u32>,
 }
 
 fn parse_input(input: &str) -> Vec<Calculation> {
@@ -33,28 +33,30 @@ fn parse_input(input: &str) -> Vec<Calculation> {
         .lines()
         .map(|line| {
             let mut parts = line.split(": ");
-            let answer = parts.next().unwrap().parse::<isize>().unwrap();
+            let answer = parts.next().unwrap().parse().unwrap();
             let values = parts
                 .next()
                 .unwrap()
                 .split_whitespace()
-                .map(|s| s.parse::<isize>().unwrap())
+                .map(|s| s.parse().unwrap())
                 .collect();
             Calculation { answer, values }
         })
         .collect()
 }
 
-fn calculate(values: &Vec<isize>, operations: &Vec<fn(isize, isize)->isize>) -> Vec<isize> {
+type Operation = fn(usize, usize) -> usize;
+
+fn calculate(values: &Vec<u32>, operations: &Vec<Operation>) -> Vec<usize> {
     if values.len() == 1 {
-        return values.clone();
+        return vec![values[0] as usize];
     }
 
     let left = values[0];
 
     calculate(&values[1..].to_vec(), operations)
         .iter()
-        .flat_map(|right| operations.iter().map(|op| op(*right, left)))
+        .flat_map(|right| operations.iter().map(|op| op(*right, left as usize)))
         .collect()
 }
 
@@ -62,7 +64,7 @@ pub fn part1(input: &str) -> PuzzleResult {
     let calculations = parse_input(input);
     let mut total = 0;
 
-    let operations = vec![|a:isize, b:isize| a + b, |a:isize, b:isize| a * b];
+    let operations = vec![|a: usize, b: usize| a + b, |a: usize, b: usize| a * b];
 
     for calculation in calculations {
         let mut values = calculation.values;
@@ -81,9 +83,9 @@ pub fn part2(input: &str) -> PuzzleResult {
     let mut total = 0;
 
     let operations = vec![
-        |a:isize, b:isize| a + b, 
-        |a:isize, b:isize| a * b,
-        |a:isize, b:isize| format!("{}{}", a, b).parse::<isize>().unwrap(),
+        |a: usize, b: usize| (a + b) as usize,
+        |a: usize, b: usize| (a * b) as usize,
+        |a: usize, b: usize| format!("{}{}", a, b).parse::<usize>().unwrap(),
     ];
 
     for calculation in calculations {
