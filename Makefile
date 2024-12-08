@@ -68,7 +68,7 @@ target/debug/aoc2024: src/main.rs $(DAYS)
 build: target/release/aoc2024
 
 watch: ## Run tests on file change
-	while inotifywait -e close_write src/day*.rs; do cargo test; done
+	bacon
 
 profile%: target/release/aoc2024
 	samply record target/debug/aoc2024 day$*
