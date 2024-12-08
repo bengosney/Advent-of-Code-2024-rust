@@ -81,16 +81,17 @@ fn parse_input(input: &str) -> (HashMap<char, HashSet<Point>>, Point) {
     let mut map: HashMap<char, HashSet<Point>> = HashMap::new();
     let mut extents = Point::new(0, 0);
 
-    for (y, line) in input.lines().enumerate() {
-        for (x, c) in line.chars().enumerate() {
+    input.lines().enumerate().for_each(|(y, line)| {
+        line.chars().enumerate().for_each(|(x, c)| {
             if c != '.' {
-                let point = Point::new(x as isize, y as isize);
-                map.entry(c).or_default().insert(point);
+                map.entry(c)
+                    .or_default()
+                    .insert(Point::new(x as isize, y as isize));
             }
-            extents.x = x as isize + 1;
-        }
-        extents.y = y as isize + 1;
-    }
+            extents.x = extents.x.max(x as isize + 1);
+        });
+        extents.y = extents.y.max(y as isize + 1);
+    });
 
     return (map, extents);
 }
@@ -117,15 +118,9 @@ pub fn part1(input: &str) -> PuzzleResult {
 }
 
 fn calculate_nodes(start: Point, direction: Point, extents: Point) -> HashSet<Point> {
-    let mut nodes: HashSet<Point> = HashSet::new();
-
-    let mut node = start.clone();
-    while node.in_bounds(extents) {
-        nodes.insert(node);
-        node = node + direction;
-    }
-
-    nodes
+    std::iter::successors(Some(start), |&p| Some(p + direction))
+        .take_while(|p| p.in_bounds(extents))
+        .collect()
 }
 
 pub fn part2(input: &str) -> PuzzleResult {
