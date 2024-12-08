@@ -98,22 +98,18 @@ fn parse_input(input: &str) -> (HashMap<char, HashSet<Point>>, Point) {
 
 pub fn part1(input: &str) -> PuzzleResult {
     let (map, extents) = parse_input(input);
-    let mut antinodes: HashSet<Point> = HashSet::new();
 
-    for key in map.keys() {
-        let points = map.get(key).unwrap();
-        for pair in points.iter().combinations(2) {
-            let (a, b) = (pair[0], pair[1]);
-            let delta = *a - *b;
-            antinodes.insert(*a + delta);
-            antinodes.insert(*b - delta);
-        }
-    }
-
-    Ok(antinodes
-        .iter()
+    Ok(map
+        .values()
+        .flat_map(|points| {
+            points.iter().combinations(2).into_iter().flat_map(|pair| {
+                let (a, b) = (pair[0], pair[1]);
+                let delta = *a - *b;
+                vec![*a + delta, *b - delta]
+            })
+        })
         .filter(|p| p.in_bounds(extents))
-        .collect::<HashSet<_>>()
+        .collect::<HashSet<Point>>()
         .len())
 }
 
@@ -125,20 +121,21 @@ fn calculate_nodes(start: Point, direction: Point, extents: Point) -> HashSet<Po
 
 pub fn part2(input: &str) -> PuzzleResult {
     let (map, extents) = parse_input(input);
-    let mut antinodes: HashSet<Point> = HashSet::new();
 
-    for key in map.keys() {
-        let points = map.get(key).unwrap();
-        for pair in points.iter().combinations(2) {
-            let (a, b) = (pair[0], pair[1]);
-            antinodes.extend(calculate_nodes(*a, *a - *b, extents));
-            antinodes.extend(calculate_nodes(*b, *b - *a, extents));
-        }
-    }
-
-    Ok(antinodes
-        .iter()
+    Ok(map
+        .values()
+        .flat_map(|points| {
+            points.iter().combinations(2).into_iter().flat_map(|pair| {
+                let (a, b) = (pair[0], pair[1]);
+                vec![
+                    calculate_nodes(*a, *a - *b, extents),
+                    calculate_nodes(*b, *b - *a, extents),
+                ]
+                .into_iter()
+                .flatten()
+            })
+        })
         .filter(|p| p.in_bounds(extents))
-        .collect::<HashSet<_>>()
+        .collect::<HashSet<Point>>()
         .len())
 }
