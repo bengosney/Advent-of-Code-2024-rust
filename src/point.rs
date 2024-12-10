@@ -15,6 +15,15 @@ impl Hash for Point {
     }
 }
 
+const fn directions() -> (Point, Point, Point, Point) {
+    (
+        Point { x: 0, y: 1 },
+        Point { x: 1, y: 0 },
+        Point { x: 0, y: -1 },
+        Point { x: -1, y: 0 },
+    )
+}
+
 impl Point {
     pub fn new(x: isize, y: isize) -> Self {
         Self { x, y }
@@ -22,6 +31,11 @@ impl Point {
 
     pub fn in_bounds(&self, extents: Point) -> bool {
         (self.x >= 0 && self.x < extents.x) && (self.y >= 0 && self.y < extents.y)
+    }
+
+    pub fn neighbors(&self) -> Vec<Self> {
+        let (up, right, down, left) = directions();
+        vec![*self + up, *self + right, *self + down, *self + left]
     }
 }
 
