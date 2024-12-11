@@ -1,5 +1,4 @@
-use crate::point::Point;
-use crate::utils::PuzzleResult;
+use crate::utils::{PuzzleResult, point::Point};
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::collections::HashSet;

@@ -1,5 +1,4 @@
-use crate::point::Point;
-use crate::utils::PuzzleResult;
+use crate::utils::{PuzzleResult, point::Point};
 use std::collections::VecDeque;
 use std::collections::{HashMap, HashSet};
 
