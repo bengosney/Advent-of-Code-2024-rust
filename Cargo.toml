@@ -2,6 +2,7 @@
 name = "aoc2024"
 version = "0.1.0"
 edition = "2021"
+authors = ["Ben Gosney <bengosney@googlemail.com>"]
 
 [dependencies]
 cached = "0.54.0"
@@ -10,3 +11,6 @@ regex = "1.11.1"
 
 [profile.release]
 debug = true
+
+[dev-dependencies]
+bacon = "3.5.0"
