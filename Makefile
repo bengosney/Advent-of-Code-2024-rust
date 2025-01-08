@@ -45,6 +45,10 @@ today: inputs/day_$(CURRENT_DAY).txt src/day$(CURRENT_DAY).rs ## Setup current d
 	$(MAKE) cog
 	$(MAKE) watch
 
+day%: inputs/day_%.txt src/day%.rs ## Setup a specific day
+	$(MAKE) cog
+	$(MAKE) watch
+
 $(COGABLE_FILES): $(DAYS)
 	uvx --from cogapp cog -cr $@
 	@touch $@
